@@ -15,70 +15,69 @@ class Account {
     }
 
     /**
-     * Calculates the interest for the account.
-     * This method is not implemented in the base class and serves as a placeholder for specific interest calculation in derived classes.
-     * Override this method in the derived classes to provide the interest calculation formula.
-     */
-    public void calculateInterest() {
-        logger.info("No interest calculated for the base Account.");
-    }
-
-    /**
      * Gets the current balance of the account.
      * @return The current balance of the account.
      */
     public double getBalance() {
         return balance;
     }
+
+    /**
+     * Calculates the interest amount for the account.
+     * This method is not implemented in the base class and serves as a placeholder for specific interest calculation in derived classes.
+     * Override this method in the derived classes to provide the interest calculation formula.
+     */
+    public void calculateInterest() {
+        double interestRate = 0.02;
+        double interest = balance * interestRate;
+        balance += interest;
+        logger.info("Interest calculation in Account: " + interest);
+    }
 }
 
 class SavingsAccount extends Account {
-    private double interestRate;
 
     /**
      * Creates a SavingsAccount object with the specified initial balance and interest rate.
-     * @param balance      The initial balance of the account.
-     * @param interestRate The interest rate for calculating interest.
+     * @param balance  The initial balance of the account.
      */
-    public SavingsAccount(double balance, double interestRate) {
+    public SavingsAccount(double balance) {
         super(balance);
-        this.interestRate = interestRate;
     }
 
     /**
-     * Calculates the interest for the savings account based on the specified interest rate.
+     * Calculates the interest amount for the savings account based on the specified interest rate.
      * Updates the balance by adding the interest amount.
      */
     @Override
     public void calculateInterest() {
+        double interestRate = 0.05;
         double interest = balance * interestRate;
         balance += interest;
-        logger.info("Interest calculated for SavingsAccount: " + interest);
+        logger.info("Interest calculation in SavingsAccount: " + interest);
     }
 }
 
 class CheckingAccount extends Account {
-    private double interestRate;
 
     /**
      * Creates a CheckingAccount object with the specified initial balance and interest rate.
-     * @param balance      The initial balance of the account.
-     * @param interestRate The interest rate for calculating interest.
+     * @param balance The initial balance of the account.
      */
-    public CheckingAccount(double balance, double interestRate) {
+    public CheckingAccount(double balance) {
         super(balance);
-        this.interestRate = interestRate;
     }
 
     /**
      * Calculates the interest for the checking account based on the specified interest rate.
-     * Updates the balance by adding the interest amount.
+     * No interest is calculated for check account.
      */
     @Override
     public void calculateInterest() {
+        double interestRate = 0.08;
         double interest = balance * interestRate;
         balance += interest;
-        logger.info("Interest calculated for CheckingAccount: " + interest);
+        logger.info("Interest calculation in CheckingAccount: " + interest);
     }
 }
 
@@ -86,13 +85,16 @@ public class AccountManagement {
     static Logger logger = Logger.getLogger(AccountManagement.class);
 
     public static void main(String[] args) {
-        Account account1 = new SavingsAccount(5000, 0.05);
-        Account account2 = new CheckingAccount(3000, 0.03);
+        Account account = new Account(10000);
+        account.calculateInterest();
+        logger.info("Account Balance: " + account.getBalance());
 
-        account1.calculateInterest();
-        account2.calculateInterest();
+        Account savingsAccount = new SavingsAccount(5000);
+        savingsAccount.calculateInterest();
+        logger.info("Savings Account Balance: " + savingsAccount.getBalance());
 
-        logger.info("Updated balance for account1: " + account1.getBalance());
-        logger.info("Updated balance for account2: " + account2.getBalance());
+        Account checkingAccount = new CheckingAccount(3000);
+        checkingAccount.calculateInterest();
+        logger.info("Checking Account Balance: " + checkingAccount.getBalance());
     }
 }
